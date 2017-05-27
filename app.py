@@ -1,4 +1,4 @@
-import flask
+from flask import Flask, jsonify,render_template, request
 import logging
 import mwoauth
 import os
