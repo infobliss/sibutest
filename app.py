@@ -32,7 +32,7 @@ def login():
             request_token._fields, request_token))
         return flask.redirect(redirect)
 
-@app.route('/results', methods=['POST'])
+@app.route('/result', methods=['POST'])
 def receiveData():
     glam1 = request.form['glam_name']
     id = request.form['uuid']
@@ -81,8 +81,8 @@ def oauth_callback():
             access_token._fields, access_token))
         flask.session['username'] = identity['username']
 
-    #return flask.render_template('glam_form.html') 
-    return flask.redirect(flask.url_for('index'))
+    return flask.render_template('glam_form.html') 
+    #return flask.redirect(flask.url_for('index'))
 
 
 @app.route('/logout')
