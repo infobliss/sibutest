@@ -1,8 +1,10 @@
-from flask import Flask, jsonify,render_template, request
+import flask
 import logging
 import mwoauth
 import os
 import yaml
+from NationaalArchief2 import main
+from glamFullList import listOfGlams
 
 app = flask.Flask(__name__)
 
@@ -34,9 +36,9 @@ def login():
 
 @app.route('/result', methods=['POST'])
 def receiveData():
-    glam1 = request.form['glam_name']
-    id = request.form['uuid']
-    categories = categories
+    glam1 = flask.request.form['glam_name']
+    id = flask.request.form['uuid']
+    categories = flask.request.form['categories']
     glam_list = listOfGlams
     
     try:
