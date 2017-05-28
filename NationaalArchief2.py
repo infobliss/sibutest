@@ -194,8 +194,8 @@ def load_from_url(url, categories, nocat=True, uploading=False):
             filetitle=re.sub('[:/#\[\]\{\}<>\|_;\?]', '', unidecode(title))
         articletitle=filetitle + ' - Nationaal Archief - ' + identifier + '.jpg'
 
-        if uploading:
-            upload_file(image_url, articletext, articletitle)
+    if uploading:
+        upload_file(image_url, articletext, articletitle)
 
 
     #pprint(parsed_j)
