@@ -190,9 +190,9 @@ def load_from_url(url, categories, nocat=True, uploading=False):
         cutposition= filetitle.rfind(' ')
         if(cutposition>20):
             filetitle=re.sub('[:/#\[\]\{\}<>\|_]', '', unidecode(filetitle[:cutposition]))
-        else:
-            filetitle=re.sub('[:/#\[\]\{\}<>\|_;\?]', '', unidecode(title))
-        articletitle=filetitle + ' - Nationaal Archief - ' + identifier + '.jpg'
+    else:
+        filetitle=re.sub('[:/#\[\]\{\}<>\|_;\?]', '', unidecode(title))
+    articletitle=filetitle + ' - Nationaal Archief - ' + identifier + '.jpg'
 
     if uploading:
         upload_file(image_url, articletext, articletitle)
