@@ -36,27 +36,27 @@ def login():
 
 @app.route('/result', methods=['POST'])
 def receiveData():
+    username = flask.session.get('username', None)
     glam1 = flask.request.form['glam_name']
     id = flask.request.form['uuid']
     categories = flask.request.form['categories']
     glam_list = listOfGlams
-    
+
     try:
-        for glam in glam_list: 
+        for glam in glam_list:
             if glam['name'] == glam1:
-    	        break
+                break
     except:
         return "GLAM Not Found in our list"
 
     #upload the image
-    howManyMatches = main(uuid, categories)
+    howManyMatches = main(id, categories, username)
     print('passes main')
     if howManyMatches == 0:
         return 'No match found!'
     else:
         returnString = 'operation successful'
     return returnString
-
 
 @app.route('/oauth-callback')
 def oauth_callback():
