@@ -3,7 +3,8 @@
 import sys
 import json
 sys.path.append("..")
-#from pywikibot.specialbots import UploadRobot #stated to be unresolved, but works fine
+import pywikibot
+from pywikibot.specialbots import UploadRobot #stated to be unresolved, but works fine
 from xml.dom import minidom
 #from urllib2 import urlopen
 #To make Python 2 code work in Python 3:
@@ -164,7 +165,12 @@ def load_from_url(url, categories, nocat=True, uploading=False):
         permission='CC BY SA 4.0'
         license='{{cc-by-sa-4.0}}' 
 
-    articletext+=permission + '\n |other_versions     =\n }}\n\n== {{int:license-header}} ==\n{{Nationaal Archief}}\n' + license + '\n\n'
+    else:
+        permission=''
+        license=''
+	
+    if permission:
+        articletext+=permission + '\n |other_versions     =\n }}\n\n== {{int:license-header}} ==\n{{Nationaal Archief}}\n' + license + '\n\n'
     if nocat:
         articletext+='[[Category:Images from the Nationaal Archief needing categories]]\n'
 
@@ -194,7 +200,7 @@ def load_from_url(url, categories, nocat=True, uploading=False):
         filetitle=re.sub('[:/#\[\]\{\}<>\|_;\?]', '', unidecode(title))
     articletitle=filetitle + ' - Nationaal Archief - ' + identifier + '.jpg'
 
-    if uploading:
+    if uploading and permission:
         upload_file(image_url, articletext, articletitle)
 
 
@@ -212,8 +218,9 @@ def upload_file(file_location, description, filename):
     bot.run()
 
 
-def main(uuid, categories):
+def main(uuid, categories, username):
 	
+    pywikibot.config.usernames['commons']['commons'] = username
     #The user will provide a valid URL and categories.
     sendurl = 'http://www.gahetna.nl/beeldbank-api/zoek/'+ uuid
 
