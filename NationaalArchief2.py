@@ -6,6 +6,7 @@ sys.path.append("..")
 import pywikibot
 from pywikibot.specialbots import UploadRobot #stated to be unresolved, but works fine
 from xml.dom import minidom
+from config_copy import consumer_key, consumer_secret
 #from urllib2 import urlopen
 #To make Python 2 code work in Python 3:
 try:
@@ -218,9 +219,13 @@ def upload_file(file_location, description, filename):
     bot.run()
 
 
-def main(uuid, categories, username):
+def main(uuid, categories, username, a, b):
 	
+    #consumer_key, consumer_secret are obtained from the config_copy file now   
+    print('Configuring pywikibot...')
+    pywikibot.config.authenticate['commons.wikimedia.org'] = (consumer_key, consumer_secret, a, b)
     pywikibot.config.usernames['commons']['commons'] = username
+    pywikibot.Site('commons', 'commons', user=username).login()
     #The user will provide a valid URL and categories.
     sendurl = 'http://www.gahetna.nl/beeldbank-api/zoek/'+ uuid
 
