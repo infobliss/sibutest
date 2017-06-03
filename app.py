@@ -3,6 +3,7 @@ import logging
 import mwoauth
 import os
 import yaml
+from requests_oauthlib import OAuth1
 from NationaalArchief2 import main
 from glamFullList import listOfGlams
 
@@ -12,6 +13,8 @@ app = flask.Flask(__name__)
 __dir__ = os.path.dirname(__file__)
 app.config.update(
     yaml.safe_load(open(os.path.join(__dir__, 'config.yaml'))))
+
+consumer_token = mwoauth.ConsumerToken(app.config['CONSUMER_KEY'], app.config['CONSUMER_SECRET'])
 
 @app.route('/')
 def index():
@@ -49,10 +52,13 @@ def receiveData():
     except:
         return "GLAM Not Found in our list"
 
+    #auth = OAuth1(client_key=consumer_token.key, client_secret=consumer_token.secret, resource_owner_key=flask.session['access_token_key'], resource_owner_secret=flask.session['access_token_secret'])
+    
     #upload the image
-    howManyMatches = main(id, categories, username)
+    value = main(id, categories, username, flask.session['access_token_key'], flask.session['access_token_secret'])
+
     print('passes main')
-    if howManyMatches == 0:
+    if value == 0:
         return 'No match found!'
     else:
         returnString = 'operation successful'
@@ -65,7 +71,7 @@ def oauth_callback():
         flask.flash(u'OAuth callback failed. Are cookies disabled?')
         return flask.redirect(flask.url_for('index'))
 
-    consumer_token = mwoauth.ConsumerToken(app.config['CONSUMER_KEY'], app.config['CONSUMER_SECRET'])
+    #consumer_token = mwoauth.ConsumerToken(app.config['CONSUMER_KEY'], app.config['CONSUMER_SECRET'])
 
     try:
         access_token = mwoauth.complete(
